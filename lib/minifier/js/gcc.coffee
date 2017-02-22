@@ -95,7 +95,7 @@ class GccMinifier extends BaseMinifier
 
         if @options.minifierOptions.externs isnt undefined
             if fs.existsSync(@options.minifierOptions.externs.replace("$file_path", inputFilename.replace("." + inputFilename.split(".").pop(), "")))
-                options += ' --externs ' + @options.minifierOptions.externs
+                options += ' --externs ' + @options.minifierOptions.externs.replace("$file_path", inputFilename.replace("." + inputFilename.split(".").pop(), ""))
 
         if @options.minifierOptions.extra_annotation_name isnt undefined
             options += ' --extra_annotation_name ' + @options.minifierOptions.extra_annotation_name
