@@ -27,6 +27,9 @@ class GccMinifier extends BaseMinifier
                 command += ' --js_output_file "' + outputFilename + '"'
 
                 options = @prepareMinifierOptions()
+
+                console.log(@options.minifierOptions.externs.replace("$file_path", inputFilename.replace("." + inputFilename.split(".").pop(), "")))
+
                 if @options.minifierOptions.externs isnt undefined
                     if fs.existsSync(@options.minifierOptions.externs.replace("$file_path", inputFilename.replace("." + inputFilename.split(".").pop(), "")))
                         options = options.replace("$file_path", inputFilename.replace("." + inputFilename.split(".").pop(), ""))
