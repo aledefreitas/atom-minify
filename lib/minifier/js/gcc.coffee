@@ -25,7 +25,7 @@ class GccMinifier extends BaseMinifier
                 command += ' --js_output_file "' + outputFilename + '"'
 
                 options = @prepareMinifierOptions()
-                command += ' ' + options
+                command += ' ' + options.replace("$file_path", inputFilename.replace(inputFilename.split(".").pop(), ""))
 
                 exec command,
                     maxBuffer: @options.buffer,
