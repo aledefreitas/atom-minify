@@ -60,9 +60,6 @@ class GccMinifier extends BaseMinifier
         if @options.minifierOptions.common_js_module_path_prefix isnt undefined
             options += ' --common_js_module_path_prefix ' + @options.minifierOptions.common_js_module_path_prefix
 
-        if @options.minifierOptions.compilation_level isnt undefined
-            options += ' --compilation_level ' + @options.minifierOptions.compilation_level
-
         if @options.minifierOptions.O isnt undefined
             options += ' -O ' + @options.minifierOptions.O
 
@@ -96,6 +93,12 @@ class GccMinifier extends BaseMinifier
         if @options.minifierOptions.externs isnt undefined
             if fs.existsSync(@options.minifierOptions.externs.replace("$file_path", inputFilename.replace("." + inputFilename.split(".").pop(), "")))
                 options += ' --externs ' + @options.minifierOptions.externs.replace("$file_path", inputFilename.replace("." + inputFilename.split(".").pop(), ""))
+
+        if @options.minifierOptions.compilation_level isnt undefined
+            if @options.minifierOptions.externs isnt undefined and fs.existsSync(@options.minifierOptions.externs.replace("$file_path", inputFilename.replace("." + inputFilename.split(".").pop(), "")))
+                options += ' --compilation_level ' + @options.minifierOptions.compilation_level
+            else
+                options += ' --compilation_level SIMPLE'
 
         if @options.minifierOptions.extra_annotation_name isnt undefined
             options += ' --extra_annotation_name ' + @options.minifierOptions.extra_annotation_name
