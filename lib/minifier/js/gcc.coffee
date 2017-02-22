@@ -97,6 +97,7 @@ class GccMinifier extends BaseMinifier
             options += ' --export_local_property_definitions'
 
         if @options.minifierOptions.externs isnt undefined
+            options += ' --externs ' + @options.minifierOptions.externs
 
         if @options.minifierOptions.extra_annotation_name isnt undefined
             options += ' --extra_annotation_name ' + @options.minifierOptions.extra_annotation_name
