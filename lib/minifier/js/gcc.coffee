@@ -27,10 +27,11 @@ class GccMinifier extends BaseMinifier
                 command += ' --js_output_file "' + outputFilename + '"'
 
                 options = @prepareMinifierOptions()
-                if(@options.minifierOptions.externs isnt undefined and fs.existsSync(@options.minifierOptions.externs.replace("$file_path", inputFilename.replace(inputFilename.split(".").pop(), ""))))
-                    command += ' ' + options.replace("$file_path", inputFilename.replace(inputFilename.split(".").pop(), ""))
-                else
-                    command += ' ' + options
+                if @options.minifierOptions.externs isnt undefined
+                    if fs.existsSync(@options.minifierOptions.externs.replace("$file_path", inputFilename.replace("." + inputFilename.split(".").pop(), "")))
+                        options = options.replace("$file_path", inputFilename.replace("." + inputFilename.split(".").pop(), ""))
+
+                command += ' ' + options
 
 
                 exec command,
