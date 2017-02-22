@@ -65,6 +65,15 @@ class AtomMinifier
                 @emitMessageAndFinish('error', errorMessage, true)
                 return
 
+            if @inputFile.path.indexOf(".externs.js") isnt -1
+                dialogResultButton = atom.confirm
+                    message: "You want to minify a externs only file. Do you really want to minify this?"
+                    detailedMessage: "You can choose:"
+                    buttons: ["Minify", "Cancel"]
+                if dialogResultButton is 1
+                    @emitMessageAndFinish('warning', 'Minification cancelled due to file being an externs file only', true)
+                    return;
+
             # If content type cannot automatically be detected, user is asked for content type. If he
             # cancels the request, a warning is shown, else if content type is false, no message
             # is display and only the finished event is emitted
