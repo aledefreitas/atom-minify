@@ -1,5 +1,7 @@
 {BaseMinifier} = require('./../BaseMinifier.coffee')
 
+fs = require('fs');
+
 module.exports =
 class GccMinifier extends BaseMinifier
 
@@ -25,7 +27,7 @@ class GccMinifier extends BaseMinifier
                 command += ' --js_output_file "' + outputFilename + '"'
 
                 options = @prepareMinifierOptions()
-                command += ' ' + options.replace("$file_path", inputFilename.replace(inputFilename.split(".").pop(), ""))
+                command += ' ' + options
 
                 exec command,
                     maxBuffer: @options.buffer,
@@ -91,7 +93,8 @@ class GccMinifier extends BaseMinifier
             options += ' --export_local_property_definitions'
 
         if @options.minifierOptions.externs isnt undefined
-            options += ' --externs ' + @options.minifierOptions.externs
+            if not fs.existsSync(@options.minifierOptions.externs.replace("$file_path", inputFilename.replace(inputFilename.split(".").pop(), "")))
+                options += ' --externs ' + @options.minifierOptions.externs.replace("$file_path", inputFilename.replace(inputFilename.split(".").pop(), ""))
 
         if @options.minifierOptions.extra_annotation_name isnt undefined
             options += ' --extra_annotation_name ' + @options.minifierOptions.extra_annotation_name
