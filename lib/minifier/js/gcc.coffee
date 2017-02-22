@@ -26,14 +26,7 @@ class GccMinifier extends BaseMinifier
                 command += ' --js "' + inputFilename + '"'
                 command += ' --js_output_file "' + outputFilename + '"'
 
-                options = @prepareMinifierOptions()
-
-                console.log(@options.minifierOptions.externs.replace("$file_path", inputFilename.replace("." + inputFilename.split(".").pop(), "")))
-
-                if @options.minifierOptions.externs isnt undefined
-                    if fs.existsSync(@options.minifierOptions.externs.replace("$file_path", inputFilename.replace("." + inputFilename.split(".").pop(), "")))
-                        options = options.replace("$file_path", inputFilename.replace("." + inputFilename.split(".").pop(), ""))
-
+                options = @prepareMinifierOptions(inputFilename)
                 command += ' ' + options
 
 
@@ -49,7 +42,7 @@ class GccMinifier extends BaseMinifier
                         callback(minified, error)
 
 
-    prepareMinifierOptions: () ->
+    prepareMinifierOptions: (inputFilename) ->
         options = ''
 
         if @options.minifierOptions.angular_pass isnt undefined
@@ -101,7 +94,8 @@ class GccMinifier extends BaseMinifier
             options += ' --export_local_property_definitions'
 
         if @options.minifierOptions.externs isnt undefined
-            options += ' --externs ' + @options.minifierOptions.externs
+            if fs.existsSync(@options.minifierOptions.externs.replace("$file_path", inputFilename.replace("." + inputFilename.split(".").pop(), "")))
+                options += ' --externs ' + @options.minifierOptions.externs
 
         if @options.minifierOptions.extra_annotation_name isnt undefined
             options += ' --extra_annotation_name ' + @options.minifierOptions.extra_annotation_name
